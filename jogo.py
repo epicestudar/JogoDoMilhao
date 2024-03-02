@@ -1,25 +1,34 @@
+
 import random
-import perguntas
+from perguntas import perguntas
 
-respostas = []
-dinheiro = 0
-numero_questoesFaceis = 0
-numero_questoesMedias = 0
-numero_questoesDificeis = 0
+def exibir_pergunta(pergunta):
+    print(pergunta["pergunta"])
+    for opcao in pergunta["opcoes"]:
+        print(opcao)
 
-for questao_facil in perguntas.questoes_faceis:
-    print("=========================================================")
-    print(questao_facil)
-    for alternativa_facil in perguntas.alternativas_faceis[numero_questoesFaceis]:
-        print(alternativa_facil)
+def verificar_resposta(pergunta, resposta):
+    return resposta.lower() == pergunta["resposta"]
 
-resposta = input("Digite (A, B, C ou D): ").upper()
-respostas.append(resposta)
-numero_questoesFaceis += 1
+def jogar():
+    dinheiro = 0
 
-if resposta == perguntas.respostas_faceis[numero_questoesFaceis]:
-    dinheiro = dinheiro + 66.666
-    print("Resposta Correta!")
-else:
-    print("Resposta Incorreta!")
-    numero_questoesFaceis += 1
+    print("Bem-vindo ao Quem Quer Ser um Milionário?\n")
+
+    perguntas_embaralhadas = random.sample(perguntas, len(perguntas))
+
+    for pergunta in perguntas_embaralhadas:
+        exibir_pergunta(pergunta)
+        resposta = input("\nQual é a sua resposta? ").strip()
+
+        if verificar_resposta(pergunta, resposta):
+            print("\nResposta correta! Você ganhou dinheiro!\n")
+            dinheiro += 66.666
+        else:
+            print("\nResposta incorreta! Fim de jogo!\n")
+            break
+
+    print("Pontuação final: $", dinheiro)
+
+if __name__ == "__main__":
+    jogar()
